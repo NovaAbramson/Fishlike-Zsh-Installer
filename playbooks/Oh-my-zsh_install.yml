@@ -1,0 +1,159 @@
+---
+- name: Installing oh-my-zsh with plugins
+  hosts: localhost
+  gather_facts: false
+  become: true
+
+  tasks:  
+    - name: Repository cache update
+      apt:
+        update_cache: yes
+      become: true
+    #   register: command_output
+
+    # - name: Output of reopsitory cache update
+    #   debug:
+    #     var: command_output
+
+    - name: Installing pip
+      apt:
+        name: python3-pip
+      become: true
+    #   register: command_output
+
+    # - name: Output of installing pip
+    #   debug:
+    #     var: command_output
+
+    - name: Installing pexpect module
+      pip:
+        name: pexpect
+      become: true
+    #   register: command_output
+
+    # - name: Output of installing pexpect module
+    #   debug:
+    #     var: command_output
+
+    - name: Installing additional packages
+      apt:
+        name:
+          - curl
+          - zsh
+          - neofetch
+          - bat
+      # register: command_output
+
+    # - name: Output of installing additional packages
+    #   debug:
+    #     var: command_output
+
+    - name: Oh-My-Zsh install script download
+      get_url:
+        url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+        dest: /tmp/install_ohmyzsh.sh
+        mode: '0755'
+    #   register: command_output
+
+    # - name: Output of Oh-My-Zsh install script download
+    #   debug:
+    #     var: command_output
+
+    - name: Installing Oh-My-Zsh
+      command: "/bin/bash /tmp/install_ohmyzsh.sh"
+      become_user: abramson
+    #   register: command_output
+
+    # - name: Output of installing Oh-My-Zsh
+    #   debug:
+    #     var: command_output
+
+    - name: Installing autosuggestion plugin
+      shell: git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+      become_user: abramson
+    #   register: command_output
+
+    # - name: Output of installing autosuggestion plugin
+    #   debug:
+    #    var: command_output
+
+    - name: Installing syntax highlighting plugin
+      shell: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+      become_user: abramson
+    #   register: command_output
+
+    # - name: Output of installing syntax highlighting plugin
+    #   debug:
+    #    var: command_output
+
+    - name: Enabling plugins
+      shell: sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/g' /home/abramson/.zshrc
+      become_user: abramson
+      args:
+        warn: false
+    #   register: command_output
+
+    # - name: Output of enabling plugins
+    #   debug:
+    #    var: command_output
+
+    - name: Installing lsd
+      expect:
+        shell: sudo snap install lsd
+        responses:
+          "[sudo] password for abramson:": "Dante99"
+    #   register: command_output
+
+    # - name: Output of installing lsd
+    #   debug:
+    #    var: command_output
+
+    - name: Setting up lsd
+      shell: echo "alias ls="lsd"" >> /home/abramson/.zshrc
+      become_user: abramson
+    #   register: command_output
+
+    # - name: Output of setting up lsd
+    #   debug:
+    #    var: command_output
+
+    - name: Setting up bat
+      shell: echo "alias cat="bat"" >> /home/abramson/.zshrc
+      become_user: abramson
+    #   register: command_output
+
+    # - name: Output of setting up bat
+    #   debug:
+    #    var: command_output
+
+    - name: Editing theme in .zshrc
+      shell: sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="bira"/g' /home/abramson/.zshrc
+      become_user: abramson
+      args:
+        warn: false
+    #   register: command_output
+
+    # - name: Output of editing theme in .zshrc
+    #   debug:
+    #    var: command_output
+
+    - name: Including neofetch in .zshrc
+      shell: echo "neofetch" >> /home/abramson/.zshrc
+      become_user: abramson
+    #   register: command_output
+
+    # - name: Output of including neofetch in .zshrc
+    #   debug:
+    #    var: command_output
+
+    - name: Changing default shell
+      expect:
+        command: chsh -s /bin/zsh
+        responses:
+          "Password:": "Dante99"
+      become_user: abramson
+    #   register: command_output
+
+    # - name: Output of changing default shell
+    #   debug:
+    #    var: command_output
