@@ -1,5 +1,3 @@
-Ansible automatization of Oh-My-Zsh and Powerlevel10k frameworks install with NovaAbramson's parameters
-
 ![Version](https://img.shields.io/badge/Version-beta_0.3-brightgreen.svg)
 [![License](https://img.shields.io/badge/License-FTL-blue)](https://firtreelicense.firtreeuniversity.education)
 
