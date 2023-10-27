@@ -104,7 +104,7 @@ echo "Тип переменные отработали, окда?"
 #     sed -i "s/your_manager/$package_manager_name/g" ./playbooks/P10k_install.yml
 # fi
 
-echo "User data replace succeed! Starting playbook..."
+echo "User data replace succeed! Starting playbook(s)..."
 
 echo ""
 echo ""

@@ -42,6 +42,7 @@
           - zsh
           - neofetch
           - bat
+          - snap
       # register: command_output
 
     # - name: Output of installing additional packages
